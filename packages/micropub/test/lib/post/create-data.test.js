@@ -1,5 +1,6 @@
 require('dotenv').config();
 
+const defaults = require('@indiekit/config-jekyll');
 const sinon = require('sinon');
 const test = require('ava');
 const validUrl = require('valid-url');
@@ -25,8 +26,7 @@ test.beforeEach(t => {
   };
 
   t.context.config = {
-    defaults: require('@indiekit/config-jekyll'),
-    endpointUrl: 'https://endpoint.example',
+    'post-types': defaults['post-types'],
     me: process.env.INDIEKIT_URL
   };
 });
@@ -44,5 +44,5 @@ test('Creates post data object', async t => {
 test('Throws error', async t => {
   const req = await t.context.req();
   const error = await t.throwsAsync(createData(req, undefined));
-  t.is(error.message, 'Cannot read property \'post-type-config\' of undefined');
+  t.is(error.message, 'Cannot read property \'post-types\' of undefined');
 });

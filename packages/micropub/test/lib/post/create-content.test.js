@@ -19,11 +19,10 @@ const postData = {
 };
 
 const pub = {
-  'post-type-config': {
-    note: {
-      template: path.resolve(__dirname, '../fixtures/template.njk')
-    }
-  }
+  'post-types': [{
+    type: 'note',
+    template: path.resolve(__dirname, '../fixtures/template.njk')
+  }]
 };
 
 test('Creates post content by populating post template with post data', async t => {
@@ -35,5 +34,5 @@ test('Creates post content by populating post template with post data', async t 
 
 test('Throws error', async t => {
   const error = await t.throwsAsync(createContent(postData, undefined));
-  t.is(error.message, 'Cannot read property \'post-type-config\' of undefined');
+  t.is(error.message, 'Cannot read property \'post-types\' of undefined');
 });

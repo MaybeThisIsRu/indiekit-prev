@@ -2,6 +2,7 @@ require('dotenv').config();
 
 const fs = require('fs');
 const path = require('path');
+const defaults = require('@indiekit/config-jekyll');
 const test = require('ava');
 const validUrl = require('valid-url');
 
@@ -20,10 +21,9 @@ test.beforeEach(t => {
   };
 
   t.context.config = {
-    defaults: require('@indiekit/config-jekyll'),
-    endpointUrl: 'https://endpoint.example',
+    'post-types': defaults['post-types'],
     me: process.env.INDIEKIT_URL
-  };;
+  };
 });
 
 test('Creates media data object', async t => {

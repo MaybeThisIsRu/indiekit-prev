@@ -6,11 +6,11 @@ const microformats = require('@indiekit/microformats');
  * Express middleware function for querying Micropub endpoint.
  *
  * @param {Object} req Request
+ * @param {Object} postStore Previously published posts
  * @param {Object} config Publication config
- * @param {Object} posts Published posts
  * @returns {Object} Requested information
  */
-module.exports = async (req, config, posts) => {
+module.exports = async (req, postStore, config) => {
   try {
     const {query} = req;
 
@@ -51,8 +51,8 @@ module.exports = async (req, config, posts) => {
         }
 
         // Return list of previously published posts
-        return (posts ? {
-          items: posts.map(post => {
+        return (postStore ? {
+          items: postStore.map(post => {
             return post.mf2;
           })
         } : {});

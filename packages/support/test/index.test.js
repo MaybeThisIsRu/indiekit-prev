@@ -78,59 +78,6 @@ test('Decodes form-encoded string', t => {
   t.is(utils.decodeFormEncodedString('http%3A%2F%2Ffoo.bar'), 'http://foo.bar');
 });
 
-test('Gets data from filesystem', async t => {
-  // Setup
-  if (!fs.existsSync(outputDir)) {
-    fs.mkdirSync(outputDir);
-  }
-
-  const dataFile = path.join(outputDir, 'foo.txt');
-  fs.writeFileSync(dataFile, 'foobar');
-  const result = await utils.getData('foo.txt', outputDir, github);
-
-  // Test assertions
-  t.is(result, 'foobar');
-  fs.unlinkSync(dataFile);
-});
-
-test('Gets data from publisher', async t => {
-  // Setup
-  if (!fs.existsSync(outputDir)) {
-    fs.mkdirSync(outputDir);
-  }
-
-  // Mock request
-  const scope = nock('https://api.github.com')
-    .get(uri => uri.includes('bar.txt'))
-    .reply(200, {
-      content: 'Zm9vYmFy',
-      sha: '\b[0-9a-f]{5,40}\b',
-      name: 'bar.txt'
-    });
-  const result = await utils.getData('bar.txt', outputDir, github);
-
-  // Test assertions
-  t.is(result, 'foobar');
-  fs.unlinkSync(path.join(outputDir, 'bar.txt'));
-  scope.done();
-});
-
-test('Throws error if data can’t be fetched from GitHub', async t => {
-  // Mock request
-  const scope = nock('https://api.github.com')
-    .get(uri => uri.includes('baz.txt'))
-    .replyWithError('not found');
-
-  // Setup
-  const error = await t.throwsAsync(async () => {
-    await utils.getData('baz.txt', outputDir, github);
-  });
-
-  // Test assertions
-  t.regex(error.message, /\bnot found\b/);
-  scope.done();
-});
-
 test('Renders a template string using context data', t => {
   const template = '{{ name }} walks into {{ location }}';
   const context = {

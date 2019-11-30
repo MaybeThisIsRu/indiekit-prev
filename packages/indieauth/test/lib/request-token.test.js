@@ -3,16 +3,19 @@ const test = require('ava');
 
 const requestToken = require('../../lib/request-token');
 
-const tokenEndpoint = 'https://tokens.indieauth.com/token';
+const tokenEndpoint = 'https://tokens.indieauth.com';
 
 test.before(t => {
   t.context.bearer = 'JWT';
-  t.context.opts = {tokenEndpoint};
+  t.context.opts = {
+    tokenEndpoint: `${tokenEndpoint}/token`
+  };
 });
 
 test('Returns an access token', async t => {
   // Setup
-  const scope = nock(tokenEndpoint).get('')
+  const scope = nock(tokenEndpoint)
+    .get('/token')
     .reply(200, {
       client_id: 'https://client.example/',
       scope: 'create update delete media'
@@ -32,7 +35,8 @@ test('Throws error if no access token provided', async t => {
 
 test('Throws error if token endpoint returns an error', async t => {
   // Setup
-  const scope = nock(tokenEndpoint).get('')
+  const scope = nock(tokenEndpoint)
+    .get('/token')
     .reply(404, {
       error: 'Invalid request',
       error_description: 'The code provided was not valid'
@@ -47,7 +51,8 @@ test('Throws error if token endpoint returns an error', async t => {
 
 test('Throws error if can’t connect to token endpoint', async t => {
   // Setup
-  const scope = nock(tokenEndpoint).get('')
+  const scope = nock(tokenEndpoint)
+    .get('/token')
     .replyWithError('The code provided was not valid');
   const error = await t.throwsAsync(requestToken(t.context.opts, t.context.bearer));
 

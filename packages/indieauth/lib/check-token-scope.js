@@ -11,8 +11,6 @@ const HttpError = require('http-errors');
  * @return {Boolean} True if tokenScope includes requiredScope
  */
 module.exports = (opts, requiredScope) => {
-  console.log('opts', opts);
-
   if (!opts.token) {
     throw new HttpError.Unauthorized('No access token provided');
   }

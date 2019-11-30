@@ -59,7 +59,7 @@
       "NODE_ENV": "test"
     },
     "files": [
-      "packages/**/*.test.js",
+      "packages/app/**/**/*.test.js",
       "!test/helpers/*.js"
     ]
   },

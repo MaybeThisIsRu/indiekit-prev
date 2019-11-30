@@ -4,7 +4,7 @@ const express = require('express');
 const router = new express.Router();
 
 // Middlewares
-const auth = require('../middleware/auth');
+const auth = require('../middleware/authenticate');
 
 // Routes
 router.use('/config', auth, require('./config'));

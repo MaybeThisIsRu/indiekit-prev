@@ -3,7 +3,7 @@ const test = require('ava');
 
 const authorizeRequest = require('../../lib/authorize-request');
 
-const tokenEndpoint = 'https://tokens.indieauth.com/token';
+const tokenEndpoint = 'https://tokens.indieauth.com';
 const me = 'https://website.example';
 
 test.beforeEach(t => {
@@ -18,9 +18,13 @@ test('Returns access token if `headers.authorization` is authorized by token end
     scope: 'create update delete media',
     me
   };
-  const scope = nock(tokenEndpoint).get('')
+  const scope = nock(tokenEndpoint)
+    .get('/token')
     .reply(200, token);
-  const opts = {me, tokenEndpoint};
+  const opts = {
+    me,
+    tokenEndpoint: `${tokenEndpoint}/token`
+  };
   const req = {
     headers: {
       authorization: `Bearer ${t.context.token}`
@@ -40,9 +44,13 @@ test('Returns access token if `body.access_token` is authorized by token endpoin
     scope: 'create update delete media',
     me
   };
-  const scope = nock(tokenEndpoint).get('')
+  const scope = nock(tokenEndpoint)
+    .get('/token')
     .reply(200, token);
-  const opts = {me, tokenEndpoint};
+  const opts = {
+    me,
+    tokenEndpoint: `${tokenEndpoint}/token`
+  };
   const req = {
     body: {
       access_token: t.context.token
@@ -62,10 +70,11 @@ test('Throws error if publication URL not provided', async t => {
     scope: 'create update delete media',
     me
   };
-  const scope = nock(tokenEndpoint).get('')
+  const scope = nock(tokenEndpoint)
+    .get('/token')
     .reply(200, token);
   const opts = {
-    tokenEndpoint: 'https://tokens.indieauth.com/token'
+    tokenEndpoint: `${tokenEndpoint}/token`
   };
   const req = {
     headers: {
@@ -87,7 +96,8 @@ test('Throws error if publication URL doesn’t match that in token', async t =>
     scope: 'create update delete media',
     me
   };
-  const scope = nock(tokenEndpoint).get('')
+  const scope = nock(tokenEndpoint)
+    .get('/token')
     .reply(200, token);
   const opts = {
     me: 'https://foo.bar',

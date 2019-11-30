@@ -1,5 +1,6 @@
 const fs = require('fs');
 const path = require('path');
+const defaults = require('@indiekit/config-jekyll');
 const nock = require('nock');
 const test = require('ava');
 
@@ -19,14 +20,19 @@ const postStore = [{
 
 test.before(t => {
   t.context.req = query => {
-    const req = {};
+    const req = {
+      headers: {
+        host: 'endpoint.example'
+      },
+      protocol: 'https'
+    };
     req.query = query;
     return req;
   };
 
   t.context.config = {
-    defaults: require('@indiekit/config-jekyll'),
-    endpointUrl: 'https://endpoint.example',
+    categories: ['foo', 'bar'],
+    'post-types': defaults['post-types'],
     me: process.env.INDIEKIT_URL
   };
 });
@@ -44,7 +50,7 @@ test('Returns publication categories', async t => {
     q: 'category'
   });
   const result = await queryEndpoint(query, postStore, t.context.config);
-  t.deepEqual(result.categories, []);
+  t.deepEqual(result.categories, ['foo', 'bar']);
 });
 
 test('Returns list of previously published posts', async t => {

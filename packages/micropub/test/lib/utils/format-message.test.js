@@ -6,11 +6,10 @@ const postData = {
   type: 'note'
 };
 const pub = {
-  'post-type-config': {
-    note: {
-      icon: ':notebook_with_decorative_cover:'
-    }
-  }
+  'post-types': [{
+    type: 'note',
+    icon: ':notebook_with_decorative_cover:'
+  }]
 };
 
 test('Creates commit message for given post action', t => {

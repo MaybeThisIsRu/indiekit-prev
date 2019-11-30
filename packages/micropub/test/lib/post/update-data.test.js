@@ -1,5 +1,6 @@
 require('dotenv').config();
 
+const defaults = require('@indiekit/config-jekyll');
 const sinon = require('sinon');
 const test = require('ava');
 
@@ -31,8 +32,7 @@ test.beforeEach(t => {
   };
 
   t.context.config = {
-    defaults: require('@indiekit/config-jekyll'),
-    endpointUrl: 'https://endpoint.example',
+    'post-types': defaults['post-types'],
     me: process.env.INDIEKIT_URL
   };
 });

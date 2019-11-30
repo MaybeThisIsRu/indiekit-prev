@@ -166,6 +166,8 @@ const utils = {
    * @returns {Object} Post type config
    */
   getPostTypeConfig(config, type) {
+    // console.log('config', config);
+    // console.log('type', type);
     return config['post-types'].find(postType => postType.type === type);
   },
 
