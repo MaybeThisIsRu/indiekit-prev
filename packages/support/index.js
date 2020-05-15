@@ -78,7 +78,26 @@ const utils = {
   },
 
   /**
-   * Format date
+   * Fetch remote JSON file.
+   *
+   * @function fetchJson
+   * @param {Object} filePath Path to JSON filedate
+   */
+  async fetchJson(filePath) {
+    try {
+      const response = await axios.get(filePath, {
+        headers: {
+          Accept: 'application/json'
+        }
+      });
+      return response.data;
+    } catch (error) {
+      throw new Error(error);
+    }
+  },
+
+  /**
+   * Format a date.
    *
    * @function formatDate
    * @param {String} str ISO 8601 date
@@ -98,7 +117,7 @@ const utils = {
   },
 
   /**
-   * Returns an array of available categories.
+   * Return an array of available categories.
    *
    * @exports getCategories
    * @param {Object} pubCategories Publication category configuration
@@ -141,7 +160,7 @@ const utils = {
   },
 
   /**
-   * Get remote configuration file.
+   * Get post types combined from default and user configuration files.
    *
    * @function getPostTypes
    * @param {Object} defaults Default configuration
@@ -166,8 +185,6 @@ const utils = {
    * @returns {Object} Post type config
    */
   getPostTypeConfig(config, type) {
-    // console.log('config', config);
-    // console.log('type', type);
     return config['post-types'].find(postType => postType.type === type);
   },
 
@@ -212,33 +229,16 @@ const utils = {
    * @returns {Promise|Array} Post type array
    */
   async updateTemplatePaths(config, publisher, tmpdir) {
-    for await (const postType of config['post-types']) {
-      const {template} = postType;
-      const cachePath = path.join(tmpdir, 'templates');
-      const cachedTemplate = await utils.cachePublishedFile(template, cachePath, publisher);
-      postType.template = cachedTemplate;
+    if (config['post-types']) {
+      for await (const postType of config['post-types']) {
+        const {template} = postType;
+        const cachePath = path.join(tmpdir, 'templates');
+        const cachedTemplate = await utils.cachePublishedFile(template, cachePath, publisher);
+        postType.template = cachedTemplate;
+      }
     }
 
     return config;
-  },
-
-  /**
-   * Fetch remote JSON file.
-   *
-   * @function fetchJson
-   * @param {Object} filePath Path to JSON filedate
-   */
-  async fetchJson(filePath) {
-    try {
-      const response = await axios.get(filePath, {
-        headers: {
-          Accept: 'application/json'
-        }
-      });
-      return response.data;
-    } catch (error) {
-      throw new Error(error);
-    }
   },
 
   /**

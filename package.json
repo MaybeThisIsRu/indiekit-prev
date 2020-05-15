@@ -33,33 +33,33 @@
     "node": "12.x"
   },
   "dependencies": {
-    "lerna": "^3.16.4",
+    "lerna": "^3.21.0",
     "npm-run-all": "^4.1.5"
   },
   "devDependencies": {
     "@indiekit/app": "file:packages/app",
     "@indiekit/config-jekyll": "file:packages/config-jekyll",
     "@indiekit/publisher-github": "file:packages/publisher-github",
-    "ava": "^2.3.0",
-    "coveralls": "^3.0.6",
+    "ava": "^3.8.2",
+    "coveralls": "^3.1.0",
     "dotenv": "^8.1.0",
-    "ioredis": "^4.14.1",
-    "ioredis-mock": "^4.18.2",
-    "nock": "^11.3.3",
-    "nodemon": "^1.19.2",
-    "nyc": "^14.0.0",
-    "rewiremock": "^3.13.9",
-    "sinon": "^7.4.2",
+    "ioredis": "^4.16.3",
+    "ioredis-mock": "^4.19.0",
+    "nock": "^12.0.3",
+    "nodemon": "^2.0.4",
+    "nyc": "^15.0.1",
+    "rewiremock": "^3.14.1",
+    "sinon": "^9.0.2",
     "supertest": "^4.0.2",
     "valid-url": "^1.0.9",
-    "xo": "^0.24.0"
+    "xo": "^0.30.0"
   },
   "ava": {
     "environmentVariables": {
       "NODE_ENV": "test"
     },
     "files": [
-      "packages/app/**/**/*.test.js",
+      "packages/support/**/**/*.test.js",
       "!test/helpers/*.js"
     ]
   },
