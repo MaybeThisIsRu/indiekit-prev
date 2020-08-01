@@ -16,20 +16,20 @@ RUN npm update -g npm
 # ENV INDIEKIT_LOCALE=
 # ENV INDIEKIT_URL=
 
-# # Sets up timezone
+# Sets up timezone
 ENTRYPOINT [ "docker-entrypoint.sh" ]
 
-# # Set working dir for RUN, CMD, COPY, ENTRYPOINT to /app
+# Set working dir for RUN, CMD, COPY, ENTRYPOINT to /app
 WORKDIR /app
 
-# # Copy package manifest and install packages
-# # COPY package*.json /app/
+# Copy package manifest and install packages
+COPY package*.json /app/
 
 # Clean install
-# RUN npm ci
+RUN npm ci --only=production
 
 # Copy everything else
-# COPY . /app/
+COPY . /app/
 
 # Build
 #
